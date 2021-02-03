@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
+import { Transition } from '@headlessui/react';
 
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
@@ -82,15 +83,17 @@ const Navigation = ({ isLoaded }) => {
         </ul>
       </nav>
       {sessionUser && (
-        <div className={`tw-absolute tw-right-0 tw-z-10 tw-flex tw-justify-end ${showProfileMenu ? 'tw-transition tw-ease-out tw-duration-100 tw-transform tw-opacity-100 tw-scale-100' : 'tw-transition tw-ease-in tw-duration-100 tw-transform tw-opacity-0 tw-scale-95'}`}>
-          <ul className="tw-p-4 tw-text-right tw-bg-green tw-rounded tw-border-2 tw-border-black">
-            <li className="tw-p-1"><NavLink to={`/users/${sessionUser.id}`} className="hover:tw-underline">{sessionUser.username}</NavLink></li>
-            <li className="tw-p-1">{sessionUser.email}</li>
-            <li>
-              <button onClick={logout} className="tw-p-1 tw-w-100 tw-px-2 tw-border tw-rounded tw-bg-red hover:tw-bg-red-dark">Log Out</button>
-            </li>
-          </ul>
-        </div>
+        <Transition show={showProfileMenu} className="tw-origin-top-right" enter="tw-transition tw-ease-out tw-duration-100" enterFrom="tw-transform tw-opacity-0 tw-scale-95" enterTo="tw-transform tw-opacity-100 tw-scale-100" leave="tw-transition tw-ease-in tw-duration-75" leaveFrom="tw-transform tw-opacity-100 tw-scale-100" leaveTo="tw-transform tw-opacity-0 tw-scale-95">
+          <div className="tw-absolute tw-right-0 tw-z-10 tw-flex tw-justify-end">
+            <ul className="tw-p-4 tw-text-right tw-bg-green tw-rounded tw-border-2 tw-border-black">
+              <li className="tw-p-1"><NavLink to={`/users/${sessionUser.id}`} className="hover:tw-underline">{sessionUser.username}</NavLink></li>
+              <li className="tw-p-1">{sessionUser.email}</li>
+              <li>
+                <button onClick={logout} className="tw-p-1 tw-w-100 tw-px-2 tw-border tw-rounded tw-bg-red hover:tw-bg-red-dark">Log Out</button>
+              </li>
+            </ul>
+          </div>
+        </Transition>
       )}
     </>
   )
